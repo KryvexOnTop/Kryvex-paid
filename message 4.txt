@@ -4173,7 +4173,5 @@ end)
 credits:AddLabel(" ")
 credits:AddLabel("==================================")
 
-local title = credits:AddLabel("🚀 KRYVEX PRİVATE V2 🚀")
-title.TextColor3 = Color3.fromRGB(255, 215, 0)
 
 credits:AddLabel("==================================")
