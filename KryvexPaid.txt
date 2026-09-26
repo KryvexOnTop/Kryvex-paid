@@ -2925,6 +2925,78 @@ createFarm(FrostFolder, "🦵 Auto Squat", CFrame.new(-2720.66, 27.85, -590.72),
 
 local Misc = window:AddTab("Misc")
 
+Tabs.Misc:AddLabel("User Settings:")
+
+local Settings = {
+	Size = {Value = 2, Enabled = false},
+	Speed = {Value = 120, Enabled = false},
+	FOV = {Value = 70, Enabled = false}
+}
+
+Tabs.Misc:AddTextBox("Size:", function(text)
+	text = string.gsub(text, "%s+", "")
+	if tonumber(text) and tonumber(text) > 0 then
+		Settings.Size.Value = tonumber(text)
+	end
+end, {clear = false})
+
+Tabs.Misc:AddSwitch("Set Size", function(bool)
+	Settings.Size.Enabled = bool
+end)
+
+task.spawn(function()
+	while true do
+		if Settings.Size.Enabled and PlayerData.Character and PlayerData.Humanoid then
+			Remotes.ChangeSpeedSize:InvokeServer("changeSize", Settings.Size.Value)
+		end
+		task.wait(0.01)
+	end
+end)
+
+Tabs.Misc:AddTextBox("Speed:", function(text)
+	text = string.gsub(text, "%s+", "")
+	if tonumber(text) and tonumber(text) > 0 then
+		Settings.Speed.Value = tonumber(text)
+	end
+end, {clear = false})
+
+Tabs.Misc:AddSwitch("Set Speed", function(bool)
+	Settings.Speed.Enabled = bool
+end)
+
+task.spawn(function()
+	while true do
+		if Settings.Speed.Enabled and PlayerData.Character and PlayerData.Humanoid then
+			Remotes.ChangeSpeedSize:InvokeServer("changeSpeed", Settings.Speed.Value)
+		end
+		task.wait(0.01)
+	end
+end)
+
+if PlayerData.Camera then
+	Tabs.Misc:AddTextBox("FOV:", function(text)
+		text = string.gsub(text, "%s+", "")
+		if tonumber(text) and tonumber(text) >= 1 and tonumber(text) <= 120 then
+			Settings.FOV.Value = tonumber(text)
+		end
+	end, {clear = false})
+
+	Tabs.Misc:AddSwitch("Set FOV", function(bool)
+		Settings.FOV.Enabled = bool
+		PlayerData.Camera.FieldOfView = bool and Settings.FOV.Value or 70
+	end)
+
+	task.spawn(function()
+		while true do
+			if Settings.FOV.Enabled and PlayerData.Camera then
+				PlayerData.Camera.FieldOfView = Settings.FOV.Value
+			end
+			task.wait(0.01)
+		end
+	end)
+end
+
+
 local function claimChests()
     local lp = game:GetService("Players").LocalPlayer
     local char = lp.Character
