@@ -3039,7 +3039,6 @@ Misc:AddSwitch("🎰 Auto Fortune Wheel", function(Value)
     end
 end)
 
-misc:AddLabel(" 🌦️ Change Time ")
 
 local timeDropdown = Misc:AddDropdown("Change Time", function(selection)
     local lighting = game:GetService("Lighting")
