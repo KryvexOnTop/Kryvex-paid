@@ -4151,7 +4151,7 @@ end)
 
 local credits = window:AddTab("Credits")
 
-local title = credits:AddLabel("🔥 KRYVEX HUB V1")
+local title = credits:AddLabel("🔥 KRYVEX PRİVATE V1")
 title.TextColor3 = Color3.fromRGB(255, 215, 0)
 
 local dev = credits:AddLabel("👤 Developer: WozzyLaco🏴")
@@ -4171,4 +4171,9 @@ credits:AddButton("Discord Link", function()
 end)
 
 credits:AddLabel(" ")
+credits:AddLabel("==================================")
+
+local title = credits:AddLabel("🚀 KRYVEX PRİVATE V2 🚀")
+title.TextColor3 = Color3.fromRGB(255, 215, 0)
+
 credits:AddLabel("==================================")
