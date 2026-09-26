@@ -3,22 +3,22 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/SynioxStudios/Syniox-Ui/refs/heads/main/Syniox%20Gui.txt", true))()
 local displayName = game.Players.LocalPlayer.DisplayName
 
-local window = library:AddWindow("Syniox Public | Muscle Legends || HELLO - ".. displayName, {
+local window = library:AddWindow("Kryvex Private | Muscle Legends || HELLO - ".. displayName, {
     title_bar = {
-        Color3.fromRGB(160, 0, 0), 
-        Color3.fromRGB(40, 0, 0),  
-        Color3.fromRGB(0, 0, 0)    
-    }, 
-    title_bar_transparency = 0.1, 
-    background = {
-        Color3.fromRGB(0, 0, 0), 
-        Color3.fromRGB(10, 10, 10), 
-        Color3.fromRGB(20, 20, 20)
-    }, 
-    background_transparency = 0.1, 
-    main_color = Color3.fromRGB(160, 0, 0), 
-    min_size = Vector2.new(450, 330), 
-    can_resize = true 
+    Color3.fromRGB(190, 60, 255), -- Açık mor
+Color3.fromRGB(80, 20, 100),
+Color3.fromRGB(20, 0, 25)
+},
+title_bar_transparency = 0.1,
+background = {
+    Color3.fromRGB(0, 0, 0),
+    Color3.fromRGB(10, 10, 10),
+    Color3.fromRGB(20, 20, 20)
+},
+background_transparency = 0.1,
+main_color = Color3.fromRGB(190, 60, 255), -- Açık mor
+min_size = Vector2.new(479, 415),
+can_resize = true
 })
 
 local AutoFarm = window:AddTab("Farm")
@@ -2536,168 +2536,6 @@ local frameSwitch = rebirths:AddSwitch("👁️‍🗨️ Hide All Frames", func
 end)
 frameSwitch:Set(false)
 
-Misc:AddButton("🚀 FPS Booster", function()
-    local lighting = game:GetService("Lighting")
-    local terrain = game:GetService("Workspace"):FindFirstChildOfClass('Terrain')
-
-    lighting.Brightness = 0.5
-    lighting.OutdoorAmbient = Color3.fromRGB(120, 120, 120)
-    lighting.Ambient = Color3.fromRGB(120, 120, 120)
-    lighting.ClockTime = 14
-
-    if terrain then
-        terrain.WaterWaveSize = 0
-        terrain.WaterWaveSpeed = 0
-        terrain.WaterReflectance = 0
-    end
-    
-    for _, v in pairs(game:GetDescendants()) do
-        if v:IsA("ParticleEmitter") or v:IsA("Trail") then
-            v.Enabled = false
-        elseif v:IsA("BlurEffect") or v:IsA("SunRaysEffect") then
-            v.Enabled = false
-        end
-    end
-
-    game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "Syniox Hub",
-        Text = "FPS Boosted & Lighting Balanced!",
-        Duration = 3
-    })
-end)
-
-local afkActive = false
-
-Misc:AddSwitch("⏳ Anti Afk", function(Value)
-    afkActive = Value
-    
-    local Player = game:GetService("Players").LocalPlayer
-    local PlayerGui = Player:FindFirstChildOfClass("PlayerGui")
-    
-    if Value then
-        if PlayerGui:FindFirstChild("Syniox_GUI") then 
-            PlayerGui.Syniox_GUI:Destroy() 
-        end
-
-        local TweenService = game:GetService("TweenService")
-        local Stats = game:GetService("Stats")
-        local RunService = game:GetService("RunService")
-
-        local ScreenGui = Instance.new("ScreenGui", PlayerGui)
-        ScreenGui.Name = "Syniox_GUI"
-
-        local MainFrame = Instance.new("Frame", ScreenGui)
-        MainFrame.Size = UDim2.new(0, 190, 0, 210)
-        MainFrame.Position = UDim2.new(-0.3, 0, 0.4, 0)
-        MainFrame.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
-        MainFrame.Active = true
-        MainFrame.Draggable = true
-        Instance.new("UICorner", MainFrame).CornerRadius = UDim.new(0, 10)
-        local Stroke = Instance.new("UIStroke", MainFrame)
-        Stroke.Color = Color3.fromRGB(160, 0, 0)
-        Stroke.Thickness = 2
-
-        local Title = Instance.new("TextLabel", MainFrame)
-        Title.Size = UDim2.new(1, -40, 0, 40)
-        Title.Position = UDim2.new(0, 15, 0, 0)
-        Title.Text = "SYNIOX | AFK"
-        Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-        Title.Font = Enum.Font.GothamBold
-        Title.TextSize = 13
-        Title.TextXAlignment = Enum.TextXAlignment.Left
-        Title.BackgroundTransparency = 1
-
-        local ToggleBtn = Instance.new("TextButton", MainFrame)
-        ToggleBtn.Size = UDim2.new(0, 25, 0, 25)
-        ToggleBtn.Position = UDim2.new(1, -35, 0, 7)
-        ToggleBtn.Text = "-"
-        ToggleBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-        ToggleBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-        Instance.new("UICorner", ToggleBtn).CornerRadius = UDim.new(0, 6)
-
-        local StatContainer = Instance.new("Frame", MainFrame)
-        StatContainer.Size = UDim2.new(1, -20, 0, 90)
-        StatContainer.Position = UDim2.new(0, 10, 0, 40)
-        StatContainer.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-        Instance.new("UICorner", StatContainer).CornerRadius = UDim.new(0, 6)
-
-        local function CreateTxt(text, pos)
-            local lbl = Instance.new("TextLabel", StatContainer)
-            lbl.Size = UDim2.new(1, 0, 0, 30)
-            lbl.Position = pos
-            lbl.Text = text
-            lbl.TextColor3 = Color3.fromRGB(200, 200, 200)
-            lbl.Font = Enum.Font.GothamSemibold
-            lbl.TextSize = 13
-            lbl.TextXAlignment = Enum.TextXAlignment.Left
-            lbl.BackgroundTransparency = 1
-            return lbl
-        end
-
-        local TxtTime = CreateTxt("  ⏳ 00:00:00", UDim2.new(0,0,0,0))
-        local TxtFPS  = CreateTxt("  🚀 FPS: --", UDim2.new(0,0,0,30))
-        local TxtMS   = CreateTxt("  📡 MS: --", UDim2.new(0,0,0,60))
-
-        local BoostBtn = Instance.new("TextButton", MainFrame)
-        BoostBtn.Size = UDim2.new(0, 170, 0, 40)
-        BoostBtn.Position = UDim2.new(0.5, -85, 0, 150)
-        BoostBtn.BackgroundColor3 = Color3.fromRGB(160, 0, 0)
-        BoostBtn.Text = "FPS BOOST"
-        BoostBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-        BoostBtn.Font = Enum.Font.GothamBold
-        BoostBtn.TextSize = 14
-        Instance.new("UICorner", BoostBtn).CornerRadius = UDim.new(0, 6)
-
-        local isMinimized = false
-        ToggleBtn.MouseButton1Click:Connect(function()
-            isMinimized = not isMinimized
-            local targetSize = isMinimized and UDim2.new(0, 190, 0, 40) or UDim2.new(0, 190, 0, 210)
-            
-            TweenService:Create(MainFrame, TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {Size = targetSize}):Play()
-            
-            StatContainer.Visible = not isMinimized
-            BoostBtn.Visible = not isMinimized
-            ToggleBtn.Text = isMinimized and "+" or "-"
-        end)
-
-        BoostBtn.MouseButton1Down:Connect(function()
-            TweenService:Create(BoostBtn, TweenInfo.new(0.1, Enum.EasingStyle.Sine), {Size = UDim2.new(0, 160, 0, 38)}):Play()
-        end)
-
-        BoostBtn.MouseButton1Up:Connect(function()
-            TweenService:Create(BoostBtn, TweenInfo.new(0.1, Enum.EasingStyle.Sine), {Size = UDim2.new(0, 170, 0, 40)}):Play()
-            for _, v in pairs(workspace:GetDescendants()) do
-                if v:IsA("Decal") or v:IsA("Texture") or v:IsA("ParticleEmitter") or v:IsA("Fire") or v:IsA("Smoke") then v:Destroy() end
-            end
-        end)
-
-        local VirtualUser = game:GetService("VirtualUser")
-        local idledConn = Player.Idled:Connect(function() 
-            VirtualUser:CaptureController()
-            VirtualUser:ClickButton2(Vector2.new()) 
-        end)
-
-        local start = os.time()
-        task.spawn(function()
-            while afkActive do
-                task.wait(0.5)
-                if not isMinimized and MainFrame.Parent then
-                    local d = os.time() - start
-                    TxtTime.Text = string.format("  ⏳ %02d:%02d:%02d", math.floor(d/3600), math.floor((d%3600)/60), d%60)
-                    TxtFPS.Text = "  🚀 FPS: " .. math.floor(1 / RunService.RenderStepped:Wait())
-                    TxtMS.Text = "  📡 MS: " .. math.floor(Stats.Network.ServerStatsItem["Data Ping"]:GetValue())
-                end
-            end
-            if idledConn then idledConn:Disconnect() end
-        end)
-
-        TweenService:Create(MainFrame, TweenInfo.new(0.7, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {Position = UDim2.new(0.02, 0, 0.4, 0)}):Play()
-    else
-        if PlayerGui:FindFirstChild("Syniox_GUI") then
-            PlayerGui.Syniox_GUI:Destroy()
-        end
-    end
-end)
 
 local switch = Misc:AddSwitch("🔒 Lock Position", function(Value)
     if Value then
@@ -2774,27 +2612,6 @@ Misc:AddButton("💎 Gamepass AutoLift", function()
     end
 end, "🔓 Unlock AutoLift Pass")
 
-local scriptFolder = Misc:AddFolder(" 📜 External Scripts")
-
-scriptFolder:AddButton("⚡ Infinite Yield", function()
-    loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
-    
-    game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "Syniox Hub",
-        Text = "Infinite Yield Loaded!",
-        Duration = 3
-    })
-end)
-
-scriptFolder:AddButton("🕺 Emote Script", function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/7yd7/Hub/refs/heads/Branch/GUIS/Emotes.lua"))()
-    
-    game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "Syniox Hub V2",
-        Text = "Emote Script Activated!",
-        Duration = 5
-    })
-end)
 
 local parts = {}
 local partSize = 2048
@@ -3022,7 +2839,7 @@ teleport:AddButton("🏠 Spawn", function()
     humanoidRootPart.CFrame = CFrame.new(2, 8, 115)
     
     game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "Syniox Hub",
+        Title = "Kryvex Hub",
         Text = "Spawn bölgesine ışınlanıldı",
         Duration = 2
     })
@@ -3035,7 +2852,7 @@ teleport:AddButton("🔮 Secret Area", function()
     humanoidRootPart.CFrame = CFrame.new(1947, 2, 6191)
     
     game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "Syniox Hub",
+        Title = "Kryvex Hub",
         Text = "Secret Area bölgesine ışınlanıldı",
         Duration = 2
     })
@@ -3048,7 +2865,7 @@ teleport:AddButton("🏝️ Tiny Island", function()
     humanoidRootPart.CFrame = CFrame.new(-34, 7, 1903)
     
     game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "Syniox Hub",
+        Title = "Kryvex Hub",
         Text = "Tiny Island bölgesine ışınlanıldı",
         Duration = 2
     })
@@ -3061,7 +2878,7 @@ teleport:AddButton("❄️ Frozen Island", function()
     humanoidRootPart.CFrame = CFrame.new(-2600.00244, 3.67686558, -403.884369, 0.0873617008, 1.0482899e-09, 0.99617666, 3.07204253e-08, 1, -3.7464023e-09, -0.99617666, 3.09302628e-08, 0.0873617008)
     
     game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "Syniox Hub",
+        Title = "Kryvex Hub",
         Text = "Frozen Island bölgesine ışınlanıldı",
         Duration = 2
     })
@@ -3074,7 +2891,7 @@ teleport:AddButton("⚡ Mythical Island", function()
     humanoidRootPart.CFrame = CFrame.new(2255, 7, 1071)
     
     game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "Syniox Hub",
+        Title = "Kryvex Hub",
         Text = "Mythical Island bölgesine ışınlanıldı",
         Duration = 2
     })
@@ -3100,7 +2917,7 @@ teleport:AddButton("🛡️ Legend Island", function()
     humanoidRootPart.CFrame = CFrame.new(4604, 991, -3887)
     
     game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "Syniox Hub",
+        Title = "Kryvex Hub",
         Text = "Legend Island bölgesine ışınlanıldı",
         Duration = 2
     })
@@ -3113,7 +2930,7 @@ teleport:AddButton("👑 Muscle King", function()
     humanoidRootPart.CFrame = CFrame.new(-8646, 17, -5738)
     
     game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "Syniox Hub",
+        Title = "Kryvex Hub",
         Text = "Muscle King bölgesine ışınlanıldı",
         Duration = 2
     })
@@ -3126,7 +2943,7 @@ teleport:AddButton("🌴 Jungle Island", function()
     humanoidRootPart.CFrame = CFrame.new(-8659, 6, 2384)
     
     game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "Syniox Hub",
+        Title = "Kryvex Hub",
         Text = "Jungle Island bölgesine ışınlanıldı",
         Duration = 2
     })
@@ -3139,7 +2956,7 @@ teleport:AddButton("⚙️ Industrial Gym", function()
     humanoidRootPart.CFrame = CFrame.new(-5350, 57, 4929)
     
     game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "Syniox Hub",
+        Title = "Kryvex Hub",
         Text = "Industrial Gym bölgesine ışınlanıldı",
         Duration = 2
     })
@@ -3155,7 +2972,7 @@ teleport:AddButton("⚔️ Brawl Regular", function()
     humanoidRootPart.CFrame = CFrame.new(-1849, 20, -6335)
     
     game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "Syniox Hub",
+        Title = "Kryvex Hub",
         Text = "Brawl Regular bölgesine ışınlanıldı",
         Duration = 2
     })
@@ -3168,7 +2985,7 @@ teleport:AddButton("🏜️ Brawl Desert", function()
     humanoidRootPart.CFrame = CFrame.new(960, 17, -7398)
     
     game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "Syniox Hub",
+        Title = "Kryvex Hub",
         Text = "Brawl Desert bölgesine ışınlanıldı",
         Duration = 2
     })
@@ -3181,7 +2998,7 @@ teleport:AddButton("🌋 Brawl Lava", function()
     humanoidRootPart.CFrame = CFrame.new(4471, 119, -8836)
     
     game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "Syniox Hub",
+        Title = "Kryvex Hub",
         Text = "Brawl Lava bölgesine ışınlanıldı",
         Duration = 2
     })
@@ -3189,15 +3006,15 @@ end)
 
 local credits = window:AddTab("Credits")
 
-local title = credits:AddLabel("✨ Syniox Hub V2")
+local title = credits:AddLabel("✨ KRYVEX PRIVATE V1")
 title.TextColor3 = Color3.fromRGB(255, 215, 0)
 
-local dev = credits:AddLabel("👤 Developer: Yusuf")
+local dev = credits:AddLabel("👤 Developer: WozzyLaco🏴")
 dev.TextColor3 = Color3.fromRGB(255, 50, 50)
 
 credits:AddLabel("--------------------------")
 
-local thanks = credits:AddLabel("🤝 Special Thanks to: Halis & Henne")
+local thanks = credits:AddLabel("🤝 Special Thanks to: Halis & Henne & RuLing")
 thanks.TextColor3 = Color3.fromRGB(0, 255, 255)
 
 local support = credits:AddLabel("❤️ Thanks for the support!")
@@ -3205,7 +3022,7 @@ support.TextColor3 = Color3.fromRGB(255, 105, 180)
 
 credits:AddLabel("--------------------------")
 
-local useMsg = credits:AddLabel("🙏 Thank you for using Syniox Hub!")
+local useMsg = credits:AddLabel("🙏 Thank you for suing kryvex Hub!")
 useMsg.TextColor3 = Color3.fromRGB(255, 255, 255)
 
 credits:AddLabel("👇 My Discord Server Link Here")
@@ -3217,7 +3034,7 @@ end)
 credits:AddLabel(" ")
 credits:AddLabel("==================================")
 
-local bigTitle = credits:AddLabel("🚀 SYNIOX HUB V3 🚀")
+local bigTitle = credits:AddLabel("🚀 KRYVEX PRİVATE V2 🚀")
 
 pcall(function()
     bigTitle.TextSize = 25
