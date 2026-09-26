@@ -1534,7 +1534,7 @@ waitForCharacter()
 refreshActive()
 
 
-local tabFarming = window:AddTab("Fast Rebirth")
+local tabFarming = window:AddTab("Fast Farm")
 
 -- Pack Farm dependencies / state
 local lp = {
@@ -1931,7 +1931,7 @@ task.spawn(function()
     end
 end)
 
-local tabFarming = window:AddTab(“Fast Strength”)
+tabFarming:AddLabel("——————————“)
 
 tabFarming:AddLabel("💪 Fast Strength").TextSize = 21
 
