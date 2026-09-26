@@ -3039,6 +3039,8 @@ Misc:AddSwitch("🎰 Auto Fortune Wheel", function(Value)
     end
 end)
 
+misc:AddLabel(" 🌦️ Change Time ")
+
 local timeDropdown = Misc:AddDropdown("Change Time", function(selection)
     local lighting = game:GetService("Lighting")
     
@@ -3060,6 +3062,7 @@ end)
 timeDropdown:Add("Night")
 timeDropdown:Add("Day")
 timeDropdown:Add("Midnight")
+
 
 Misc:AddButton("💎 Gamepass AutoLift", function()
     local gamepassFolder = game:GetService("ReplicatedStorage").gamepassIds
