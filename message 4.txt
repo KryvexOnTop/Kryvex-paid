@@ -1536,6 +1536,8 @@ refreshActive()
 
 local tabFarming = window:AddTab("Fast Farm")
 
+tabFarming:AddLabel("👀 Fast Rebirth").TextSize = 21
+
 -- Pack Farm dependencies / state
 local lp = {
     player = game:GetService("Players").LocalPlayer
