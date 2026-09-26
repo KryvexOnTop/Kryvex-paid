@@ -4,20 +4,20 @@ local displayName = game.Players.LocalPlayer.DisplayName
 
 local window = library:AddWindow("Kryvex Public V1.2 | Muscle Legends | Goog Day - ".. displayName, {
     title_bar = {
-           Color3.fromRGB(255, 60, 60), -- Açık kırmızı
-    Color3.fromRGB(100, 20, 20), 
-    Color3.fromRGB(20, 0, 0)    
-}, 
-title_bar_transparency = 0.1, 
+          Color3.fromRGB(190, 60, 255), -- Açık mor
+Color3.fromRGB(80, 20, 100),
+Color3.fromRGB(20, 0, 25)
+},
+title_bar_transparency = 0.1,
 background = {
-    Color3.fromRGB(0, 0, 0), 
-    Color3.fromRGB(10, 10, 10), 
+    Color3.fromRGB(0, 0, 0),
+    Color3.fromRGB(10, 10, 10),
     Color3.fromRGB(20, 20, 20)
-}, 
-background_transparency = 0.1, 
-main_color = Color3.fromRGB(255, 60, 60), -- Açık kırmızı
-min_size = Vector2.new(479, 415), -- Boyut büyütüldü
-can_resize = true 
+},
+background_transparency = 0.1,
+main_color = Color3.fromRGB(190, 60, 255), -- Açık mor
+min_size = Vector2.new(479, 415),
+can_resize = true
 })
 
 local AutoFarm = window:AddTab("Farm")
