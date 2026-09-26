@@ -1534,7 +1534,7 @@ waitForCharacter()
 refreshActive()
 
 
-local tabFarming = window:AddTab("Pack Farm")
+local tabFarming = window:AddTab("Fast Farm")
 
 -- Pack Farm dependencies / state
 local lp = {
