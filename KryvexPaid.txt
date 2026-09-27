@@ -3844,6 +3844,8 @@ player.CharacterAdded:Connect(function()
     end
 end)
 
+tabFarming:AddLabel("🎮 PERFORMANCE ")Text.Size = 25
+
 
 local teleport = window:AddTab("Teleport")
 
