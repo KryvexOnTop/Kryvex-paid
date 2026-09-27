@@ -2465,7 +2465,7 @@ tabFarming:AddButton("⚡ Anti Lag", function()
     end)
 end)
 
-tabFarming:AddSwitch("🥚 Auto Eat Egg 30dk", function(Value)
+tabFarming:AddSwitch("🥚 Auto Eat Egg 30min", function(Value)
     _G.AutoEatEgg = Value
 
     if not Value then
