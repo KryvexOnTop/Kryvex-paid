@@ -3655,6 +3655,43 @@ Misc:AddButton("⚡ FPS Boost", function()
     end
 end)
 
+Misc:AddButton("📡 Optimize Ping", function()
+    local RunService = game:GetService("RunService")
+    local Players = game:GetService("Players")
+    local Lighting = game:GetService("Lighting")
+
+    -- Görsel yükü azalt
+    pcall(function()
+        settings().Rendering.QualityLevel = Enum.QualityLevel.Level01
+    end)
+
+    for _, obj in ipairs(Lighting:GetDescendants()) do
+        if obj:IsA("PostEffect") then
+            obj.Enabled = false
+        end
+    end
+
+    -- Gereksiz efektleri kapat
+    for _, obj in ipairs(workspace:GetDescendants()) do
+        if obj:IsA("ParticleEmitter")
+        or obj:IsA("Trail")
+        or obj:IsA("Beam")
+        or obj:IsA("Smoke")
+        or obj:IsA("Fire")
+        or obj:IsA("Sparkles") then
+            obj.Enabled = false
+        end
+    end
+
+    -- Fizik hesaplamalarının yerel yükünü azalt
+    pcall(function()
+        settings().Physics.AllowSleep = true
+    end)
+
+    -- Karakterin network ownership'ini değiştirmeye çalışma;
+    -- sunucu pingini doğrudan düşürmek mümkün değildir.
+end)
+
 
 AutoFarm:AddLabel(" 🌦️ Change Time ")
 
