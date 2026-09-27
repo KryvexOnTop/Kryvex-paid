@@ -3844,7 +3844,7 @@ player.CharacterAdded:Connect(function()
     end
 end)
 
-tabMisc:AddLabel("🎮 PERFORMANCE ")Text.Size = 25
+Misc:AddLabel("🎮 PERFORMANCE ")Text.Size = 25
 
 
 local teleport = window:AddTab("Teleport")
