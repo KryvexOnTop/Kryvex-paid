@@ -2135,35 +2135,6 @@ task.spawn(function()
     end
 end)
 
-tabFarming:AddSwitch("🔒 Lock Position", function(Value)
-    local player = game:GetService("Players").LocalPlayer
-
-    if Value then
-        local character = player.Character
-        if not character then return end
-
-        local root = character:FindFirstChild("HumanoidRootPart")
-        if not root then return end
-
-        local savedPosition = root.Position
-
-        _G.LockPositionConnection = game:GetService("RunService").Heartbeat:Connect(function()
-            if not Value then return end
-
-            local currentCharacter = player.Character
-            local currentRoot = currentCharacter and currentCharacter:FindFirstChild("HumanoidRootPart")
-
-            if currentRoot then
-                currentRoot.CFrame = CFrame.new(savedPosition) * (currentRoot.CFrame - currentRoot.Position)
-                currentRoot.AssemblyLinearVelocity = Vector3.zero
-            end
-        end)
-    elseif _G.LockPositionConnection then
-        _G.LockPositionConnection:Disconnect()
-        _G.LockPositionConnection = nil
-    end
-end)
-
 
 tabFarming:AddLabel("————————————————")
 tabFarming:AddLabel("💪 Fast Strength").TextSize = 21
@@ -2430,6 +2401,39 @@ task.spawn(function()
         task.wait(1)
     end
 end)
+
+tabFarming:AddLabel("============================")
+tabFarming:AddLabel("🎮 MISC ")
+
+tabFarming:AddSwitch("🔒 Lock Position", function(Value)
+    local player = game:GetService("Players").LocalPlayer
+
+    if Value then
+        local character = player.Character
+        if not character then return end
+
+        local root = character:FindFirstChild("HumanoidRootPart")
+        if not root then return end
+
+        local savedPosition = root.Position
+
+        _G.LockPositionConnection = game:GetService("RunService").Heartbeat:Connect(function()
+            if not Value then return end
+
+            local currentCharacter = player.Character
+            local currentRoot = currentCharacter and currentCharacter:FindFirstChild("HumanoidRootPart")
+
+            if currentRoot then
+                currentRoot.CFrame = CFrame.new(savedPosition) * (currentRoot.CFrame - currentRoot.Position)
+                currentRoot.AssemblyLinearVelocity = Vector3.zero
+            end
+        end)
+    elseif _G.LockPositionConnection then
+        _G.LockPositionConnection:Disconnect()
+        _G.LockPositionConnection = nil
+    end
+end)
+
 
 
 local pets = window:AddTab("Pets")
