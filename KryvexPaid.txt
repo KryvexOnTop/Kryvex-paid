@@ -2926,14 +2926,15 @@ createFarm(FrostFolder, "🦵 Auto Squat", CFrame.new(-2720.66, 27.85, -590.72),
 local Misc = window:AddTab("Misc")
 
 -- SET SPEED
-Farm:AddTextBox("Set Speed", function(Value)
+Misc:AddTextBox("Set Speed", function(Value)
     local Speed = tonumber(Value)
+
     if Speed then
         _G.SetSpeedValue = Speed
     end
 end)
 
-Farm:AddSwitch("Set Speed", function(Value)
+Misc:AddSwitch("Set Speed", function(Value)
     _G.SetSpeedEnabled = Value
 
     local Character = game.Players.LocalPlayer.Character
@@ -2950,14 +2951,15 @@ end)
 
 
 -- SET SIZE
-Farm:AddTextBox("Set Size", function(Value)
+Misc:AddTextBox("Set Size", function(Value)
     local Size = tonumber(Value)
+
     if Size then
         _G.SetSizeValue = Size
     end
 end)
 
-Farm:AddSwitch("Set Size", function(Value)
+Misc:AddSwitch("Set Size", function(Value)
     _G.SetSizeEnabled = Value
 
     local Character = game.Players.LocalPlayer.Character
@@ -2966,6 +2968,7 @@ Farm:AddSwitch("Set Size", function(Value)
     if HumanoidRootPart then
         if Value then
             _G.OriginalSize = HumanoidRootPart.Size
+
             local Size = _G.SetSizeValue or 2
             HumanoidRootPart.Size = Vector3.new(Size, Size, Size)
         else
@@ -2973,6 +2976,7 @@ Farm:AddSwitch("Set Size", function(Value)
         end
     end
 end)
+
 
 local function claimChests()
     local lp = game:GetService("Players").LocalPlayer
