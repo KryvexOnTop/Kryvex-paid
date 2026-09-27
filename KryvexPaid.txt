@@ -3692,6 +3692,28 @@ Misc:AddButton("📡 Optimize Ping", function()
     -- sunucu pingini doğrudan düşürmek mümkün değildir.
 end)
 
+Misc:AddButton("👻 Hide Effects", function()
+    local Workspace = game:GetService("Workspace")
+    local Lighting = game:GetService("Lighting")
+
+    for _, obj in ipairs(Workspace:GetDescendants()) do
+        if obj:IsA("ParticleEmitter")
+        or obj:IsA("Trail")
+        or obj:IsA("Beam")
+        or obj:IsA("Smoke")
+        or obj:IsA("Fire")
+        or obj:IsA("Sparkles") then
+            obj.Enabled = false
+        end
+    end
+
+    for _, obj in ipairs(Lighting:GetDescendants()) do
+        if obj:IsA("PostEffect") then
+            obj.Enabled = false
+        end
+    end
+end)
+
 
 AutoFarm:AddLabel(" 🌦️ Change Time ")
 
