@@ -2403,7 +2403,7 @@ task.spawn(function()
 end)
 
 tabFarming:AddLabel("============================")
-tabFarming:AddLabel("🎮 MISC ")
+tabFarming:AddLabel("🎮 MISC ").TextSize = 21
 
 tabFarming:AddSwitch("🔒 Lock Position", function(Value)
     local player = game:GetService("Players").LocalPlayer
