@@ -3838,7 +3838,16 @@ Misc:AddButton("💎 Gamepass AutoLift", function()
     end
 end, "🔓 Unlock AutoLift Pass")
 
+Misc:AddSwatch("👁️ Hide Game UI", function(Value)
+    local Players = game:GetService("Players")
+    local PlayerGui = Players.LocalPlayer:WaitForChild("PlayerGui")
 
+    for _, gui in ipairs(PlayerGui:GetChildren()) do
+        if gui:IsA("ScreenGui") and gui ~= script.Parent then
+            gui.Enabled = not Value
+        end
+    end
+end)
 
 Misc:AddSwitch("🌊 Full Walk on Water", function(bool)
     if bool then
