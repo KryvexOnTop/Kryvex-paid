@@ -2465,6 +2465,49 @@ tabFarming:AddButton("⚡ Anti Lag", function()
     end)
 end)
 
+tabFarming:AddSwitch("🥚 Auto Eat Egg", function(Value)
+    _G.AutoEatEgg = Value
+
+    if not Value then
+        return
+    end
+
+    task.spawn(function()
+        while _G.AutoEatEgg do
+            local Player = game:GetService("Players").LocalPlayer
+            local Backpack = Player:FindFirstChild("Backpack")
+            local Character = Player.Character
+
+            if Backpack then
+                local Egg = nil
+
+                -- Backpack'te Egg ara
+                for _, item in ipairs(Backpack:GetChildren()) do
+                    if item:IsA("Tool") and string.find(string.lower(item.Name), "egg") then
+                        Egg = item
+                        break
+                    end
+                end
+
+                if Egg and Character then
+                    local Humanoid = Character:FindFirstChildOfClass("Humanoid")
+
+                    if Humanoid then
+                        -- Egg'i ele al
+                        Humanoid:EquipTool(Egg)
+                        task.wait(0.5)
+
+                        -- Egg'i kullan
+                        Egg:Activate()
+                    end
+                end
+            end
+
+            -- 30 dakika bekle
+            task.wait(1800)
+        end
+    end)
+end)
 
 
 local pets = window:AddTab("Pets")
