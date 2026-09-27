@@ -3259,6 +3259,232 @@ local function makePartsSolid()
     end
 end
 
+local Players = game:GetService("Players")
+local VirtualInputManager = game:GetService("VirtualInputManager")
+local RunService = game:GetService("RunService")
+local Stats = game:GetService("Stats")
+
+local Player = Players.LocalPlayer
+
+local AntiAfkEnabled = false
+local AntiAfkThread = nil
+local StartTime = 0
+
+--// UI
+local AntiAfkGui = Instance.new("ScreenGui")
+AntiAfkGui.Name = "AntiAfkUI"
+AntiAfkGui.ResetOnSpawn = false
+AntiAfkGui.Parent = Player:WaitForChild("PlayerGui")
+
+local Frame = Instance.new("Frame")
+Frame.Size = UDim2.new(0, 210, 0, 125)
+Frame.Position = UDim2.new(0.5, -105, 0, 20)
+Frame.BackgroundColor3 = Color3.fromRGB(12, 12, 12)
+Frame.BorderSizePixel = 0
+Frame.Visible = false
+Frame.Parent = AntiAfkGui
+
+local Corner = Instance.new("UICorner")
+Corner.CornerRadius = UDim.new(0, 10)
+Corner.Parent = Frame
+
+local Stroke = Instance.new("UIStroke")
+Stroke.Color = Color3.fromRGB(255, 35, 35)
+Stroke.Thickness = 2
+Stroke.Parent = Frame
+
+-- Başlık
+local Title = Instance.new("TextLabel")
+Title.Size = UDim2.new(1, 0, 0, 28)
+Title.BackgroundTransparency = 1
+Title.Text = "⏰  ANTI AFK"
+Title.TextColor3 = Color3.fromRGB(255, 50, 50)
+Title.TextSize = 17
+Title.Font = Enum.Font.GothamBold
+Title.Parent = Frame
+
+-- Süre
+local TimeLabel = Instance.new("TextLabel")
+TimeLabel.Position = UDim2.new(0, 0, 0, 30)
+TimeLabel.Size = UDim2.new(1, 0, 0, 32)
+TimeLabel.BackgroundTransparency = 1
+TimeLabel.Text = "00:00:00"
+TimeLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+TimeLabel.TextSize = 22
+TimeLabel.Font = Enum.Font.GothamBold
+TimeLabel.Parent = Frame
+
+-- FPS
+local FPSLabel = Instance.new("TextLabel")
+FPSLabel.Position = UDim2.new(0, 10, 0, 67)
+FPSLabel.Size = UDim2.new(0.5, -10, 0, 25)
+FPSLabel.BackgroundTransparency = 1
+FPSLabel.Text = "FPS: 0"
+FPSLabel.TextColor3 = Color3.fromRGB(255, 100, 100)
+FPSLabel.TextSize = 14
+FPSLabel.Font = Enum.Font.GothamSemibold
+FPSLabel.Parent = Frame
+
+-- MS
+local MSLabel = Instance.new("TextLabel")
+MSLabel.Position = UDim2.new(0.5, 0, 0, 67)
+MSLabel.Size = UDim2.new(0.5, -10, 0, 25)
+MSLabel.BackgroundTransparency = 1
+MSLabel.Text = "MS: 0"
+MSLabel.TextColor3 = Color3.fromRGB(255, 100, 100)
+MSLabel.TextSize = 14
+MSLabel.Font = Enum.Font.GothamSemibold
+MSLabel.Parent = Frame
+
+-- Durum
+local Status = Instance.new("TextLabel")
+Status.Position = UDim2.new(0, 0, 0, 94)
+Status.Size = UDim2.new(1, 0, 0, 25)
+Status.BackgroundTransparency = 1
+Status.Text = "● ACTIVE"
+Status.TextColor3 = Color3.fromRGB(255, 50, 50)
+Status.TextSize = 13
+Status.Font = Enum.Font.Gotham
+Status.Parent = Frame
+
+
+--// FPS hesaplama
+local FPS = 0
+local Frames = 0
+local LastFPSUpdate = tick()
+
+RunService.RenderStepped:Connect(function()
+    Frames += 1
+
+    if tick() - LastFPSUpdate >= 1 then
+        FPS = Frames
+        Frames = 0
+        LastFPSUpdate = tick()
+    end
+
+    if AntiAfkEnabled then
+        FPSLabel.Text = "FPS: " .. FPS
+    end
+end)
+
+
+--// Süre + MS güncelleme
+task.spawn(function()
+    while true do
+        task.wait(1)
+
+        if AntiAfkEnabled then
+
+            -- Geçen süre
+            local elapsed = math.floor(tick() - StartTime)
+
+            local days = math.floor(elapsed / 86400)
+            local hours = math.floor((elapsed % 86400) / 3600)
+            local minutes = math.floor((elapsed % 3600) / 60)
+            local seconds = elapsed % 60
+
+            if days > 0 then
+                TimeLabel.Text = string.format(
+                    "%02d:%02d:%02d:%02d",
+                    days,
+                    hours,
+                    minutes,
+                    seconds
+                )
+            else
+                TimeLabel.Text = string.format(
+                    "%02d:%02d:%02d",
+                    hours,
+                    minutes,
+                    seconds
+                )
+            end
+
+            -- MS / Ping
+            local ping = 0
+
+            pcall(function()
+                ping = math.floor(
+                    Stats.Network.ServerStatsItem["Data Ping"]:GetValue()
+                )
+            end)
+
+            MSLabel.Text = "MS: " .. ping
+        end
+    end
+end)
+
+
+--// Anti AFK
+Misc:AddSwatch("⏰ Anti Afk", function(Value)
+
+    AntiAfkEnabled = Value
+    Frame.Visible = Value
+
+    if Value then
+
+        StartTime = tick()
+
+        TimeLabel.Text = "00:00:00"
+        FPSLabel.Text = "FPS: " .. FPS
+        Status.Text = "● ACTIVE"
+
+        if AntiAfkThread then
+            task.cancel(AntiAfkThread)
+        end
+
+        AntiAfkThread = task.spawn(function()
+
+            while AntiAfkEnabled do
+
+                -- 10 dakika bekle
+                task.wait(600)
+
+                if AntiAfkEnabled then
+
+                    local Camera = workspace.CurrentCamera
+                    local Viewport = Camera.ViewportSize
+
+                    local X = Viewport.X / 2
+                    local Y = Viewport.Y / 2
+
+                    -- Ekranın ortasına tıkla
+                    VirtualInputManager:SendMouseButtonEvent(
+                        X,
+                        Y,
+                        0,
+                        true,
+                        game,
+                        0
+                    )
+
+                    task.wait(0.1)
+
+                    VirtualInputManager:SendMouseButtonEvent(
+                        X,
+                        Y,
+                        0,
+                        false,
+                        game,
+                        0
+                    )
+
+                end
+            end
+        end)
+
+    else
+
+        Status.Text = "● DISABLED"
+
+        if AntiAfkThread then
+            task.cancel(AntiAfkThread)
+            AntiAfkThread = nil
+        end
+
+    end
+end)
+
 Misc:AddSwitch("🌊 Full Walk on Water", function(bool)
     if bool then
         createParts()
