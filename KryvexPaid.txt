@@ -3864,44 +3864,54 @@ Misc:AddSwatch("🔒 Shiftlock", function(Value)
     local RunService = game:GetService("RunService")
 
     local Player = Players.LocalPlayer
-    local Character = Player.Character or Player.CharacterAdded:Wait()
-    local Humanoid = Character:WaitForChild("Humanoid")
-
     _G.KryvexShiftlock = Value
 
-    if Value then
-        UserInputService.MouseBehavior = Enum.MouseBehavior.LockCenter
-        Humanoid.AutoRotate = false
+    if not Value then
+        UserInputService.MouseBehavior = Enum.MouseBehavior.Default
 
-        task.spawn(function()
-            while _G.KryvexShiftlock do
-                Character = Player.Character
+        local Character = Player.Character
+        if Character then
+            local Humanoid = Character:FindFirstChildOfClass("Humanoid")
+            if Humanoid then
+                Humanoid.AutoRotate = true
+                Humanoid.CameraOffset = Vector3.zero
+            end
+        end
 
-                if Character then
-                    local Root = Character:FindFirstChild("HumanoidRootPart")
-                    local Camera = workspace.CurrentCamera
+        return
+    end
 
-                    if Root and Camera then
-                        local Look = Camera.CFrame.LookVector
-                        Root.CFrame = CFrame.new(
+    UserInputService.MouseBehavior = Enum.MouseBehavior.LockCenter
+
+    task.spawn(function()
+        while _G.KryvexShiftlock do
+            local Character = Player.Character
+
+            if Character then
+                local Humanoid = Character:FindFirstChildOfClass("Humanoid")
+                local Root = Character:FindFirstChild("HumanoidRootPart")
+                local Camera = workspace.CurrentCamera
+
+                if Humanoid and Root and Camera then
+                    Humanoid.AutoRotate = false
+                    Humanoid.CameraOffset = Vector3.new(1.75, 0, 0)
+
+                    local Look = Camera.CFrame.LookVector
+                    local Direction = Vector3.new(Look.X, 0, Look.Z)
+
+                    if Direction.Magnitude > 0 then
+                        Root.CFrame = CFrame.lookAt(
                             Root.Position,
-                            Root.Position + Vector3.new(Look.X, 0, Look.Z)
+                            Root.Position + Direction
                         )
                     end
                 end
-
-                RunService.RenderStepped:Wait()
             end
-        end)
-    else
-        UserInputService.MouseBehavior = Enum.MouseBehavior.Default
 
-        if Character then
-            Humanoid.AutoRotate = true
+            RunService.RenderStepped:Wait()
         end
-    end
+    end)
 end)
-
 
 Misc:AddSwitch("⬆️ Infinite Jump", function(state)
     getgenv().InfiniteJump = state
