@@ -3843,8 +3843,8 @@ player.CharacterAdded:Connect(function()
         startNoclip()
     end
 end)
-
-Misc:AddLabel("🎮 PERFORMANCE ")Text.Size = 25
+Misc:AddLabel(“==========================“)
+Misc:AddLabel("      🎮 PERFORMANCE       “)Text.Size = 25
 
 
 local teleport = window:AddTab("Teleport")
