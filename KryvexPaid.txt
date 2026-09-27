@@ -2402,6 +2402,79 @@ task.spawn(function()
     end
 end)
 
+tabFarming:AddButton("⚙️ Industrial Bar Lift", function()
+    local character = player.Character
+    if character and character:FindFirstChild("HumanoidRootPart") then
+        character.HumanoidRootPart.CFrame = CFrame.new(-5492.24, 81.82, 4644.04)
+        task.wait(0.5)
+        local machine = findMachine("Industrial Bar Lift")
+        if machine and machine:FindFirstChild("interactSeat") then
+            local retryCount = 0
+            repeat
+                task.wait(0.2)
+                pressE()
+                retryCount = retryCount + 1
+            until (player.Character and player.Character.Humanoid.Sit) or retryCount > 10
+        end
+    end
+end)
+
+tabFarming:AddButton("🦵 Industrial Squat", function()
+    local character = player.Character
+    if character and character:FindFirstChild("HumanoidRootPart") then
+        character.HumanoidRootPart.CFrame = CFrame.new(-5216.36, 90.17, 5420.08)
+        task.wait(0.5)
+        local machine = findMachine("Industrial Squat")
+        if machine and machine:FindFirstChild("interactSeat") then
+            local retryCount = 0
+            repeat
+                task.wait(0.2)
+                pressE()
+                retryCount = retryCount + 1
+            until (player.Character and player.Character.Humanoid.Sit) or retryCount > 10
+        end
+    end
+end)
+
+tabFarming:AddLabel("Useful Features").TextSize = 23
+
+tabFarming:AddSwitch("📌 Lock Position", function(state)
+    if state then
+        local currentPos = player.Character.HumanoidRootPart.CFrame
+        getgenv().posLock = game:GetService("RunService").Heartbeat:Connect(function()
+            if player.Character:FindFirstChild("HumanoidRootPart") then
+                player.Character.HumanoidRootPart.CFrame = currentPos
+            end
+        end)
+    else
+        if getgenv().posLock then
+            getgenv().posLock:Disconnect()
+            getgenv().posLock = nil
+        end
+    end
+end)
+
+tabFarming:AddLabel("👾 Performance").TextSize = 21
+
+tabFarming:AddButton("🏴 Full FPS Boost", function()
+    local lighting = game:GetService("Lighting")
+    for _, obj in pairs(workspace:GetDescendants()) do
+        if obj:IsA("ParticleEmitter") or obj:IsA("PointLight") or obj:IsA("SpotLight") then
+            obj:Destroy()
+        end
+    end
+    lighting.Brightness = 0
+    lighting.OutdoorAmbient = Color3.new(0, 0, 0)
+    for _, v in pairs(lighting:GetChildren()) do if v:IsA("Sky") then v:Destroy() end end
+end)
+
+tabFarming:AddSwitch("👁️‍🗨️ Hide All Frames", function(state)
+    for _, obj in pairs(game:GetService("ReplicatedStorage"):GetChildren()) do
+        if obj.Name:match("Frame$") then obj.Visible = not state end
+    end
+end)
+
+
 
 local pets = window:AddTab("Pets")
 pets:AddLabel("💰 Auto Buy")
