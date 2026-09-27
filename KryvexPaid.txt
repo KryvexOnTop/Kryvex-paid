@@ -3847,62 +3847,6 @@ Misc:AddSwitch("🌊 Full Walk on Water", function(bool)
     end
 end)
 
-Misc:AddSwatch("🔒 Shiftlock", function(Value)
-    _G.KryvexShiftlock = Value
-
-    local Players = game:GetService("Players")
-    local UIS = game:GetService("UserInputService")
-    local RunService = game:GetService("RunService")
-
-    local Player = Players.LocalPlayer
-
-    if Value then
-        UIS.MouseBehavior = Enum.MouseBehavior.LockCenter
-
-        if _G.ShiftlockConnection then
-            _G.ShiftlockConnection:Disconnect()
-        end
-
-        _G.ShiftlockConnection = RunService.RenderStepped:Connect(function()
-            if not _G.KryvexShiftlock then return end
-
-            local Character = Player.Character
-            local Root = Character and Character:FindFirstChild("HumanoidRootPart")
-            local Humanoid = Character and Character:FindFirstChildOfClass("Humanoid")
-            local Camera = workspace.CurrentCamera
-
-            if Root and Humanoid and Camera then
-                Humanoid.AutoRotate = false
-
-                local Look = Camera.CFrame.LookVector
-                local Direction = Vector3.new(Look.X, 0, Look.Z)
-
-                if Direction.Magnitude > 0 then
-                    Root.CFrame = CFrame.lookAt(
-                        Root.Position,
-                        Root.Position + Direction
-                    )
-                end
-            end
-        end)
-    else
-        UIS.MouseBehavior = Enum.MouseBehavior.Default
-
-        if _G.ShiftlockConnection then
-            _G.ShiftlockConnection:Disconnect()
-            _G.ShiftlockConnection = nil
-        end
-
-        local Character = Player.Character
-        local Humanoid = Character and Character:FindFirstChildOfClass("Humanoid")
-
-        if Humanoid then
-            Humanoid.AutoRotate = true
-        end
-    end
-end)
-
-
 
 Misc:AddButton("🔄 Rejoin Game", function()
     local ScreenGui = Instance.new("ScreenGui")
