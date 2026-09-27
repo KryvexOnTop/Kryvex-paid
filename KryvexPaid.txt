@@ -3857,6 +3857,52 @@ Misc:AddSwitch("🌊 Full Walk on Water", function(bool)
     end
 end)
 
+
+Misc:AddSwatch("🔒 Shiftlock", function(Value)
+    local Players = game:GetService("Players")
+    local UserInputService = game:GetService("UserInputService")
+    local RunService = game:GetService("RunService")
+
+    local Player = Players.LocalPlayer
+    local Character = Player.Character or Player.CharacterAdded:Wait()
+    local Humanoid = Character:WaitForChild("Humanoid")
+
+    _G.KryvexShiftlock = Value
+
+    if Value then
+        UserInputService.MouseBehavior = Enum.MouseBehavior.LockCenter
+        Humanoid.AutoRotate = false
+
+        task.spawn(function()
+            while _G.KryvexShiftlock do
+                Character = Player.Character
+
+                if Character then
+                    local Root = Character:FindFirstChild("HumanoidRootPart")
+                    local Camera = workspace.CurrentCamera
+
+                    if Root and Camera then
+                        local Look = Camera.CFrame.LookVector
+                        Root.CFrame = CFrame.new(
+                            Root.Position,
+                            Root.Position + Vector3.new(Look.X, 0, Look.Z)
+                        )
+                    end
+                end
+
+                RunService.RenderStepped:Wait()
+            end
+        end)
+    else
+        UserInputService.MouseBehavior = Enum.MouseBehavior.Default
+
+        if Character then
+            Humanoid.AutoRotate = true
+        end
+    end
+end)
+
+
 Misc:AddSwitch("⬆️ Infinite Jump", function(state)
     getgenv().InfiniteJump = state
     game:GetService("UserInputService").JumpRequest:connect(function()
