@@ -2355,7 +2355,7 @@ tabs.strength.durability:GetPropertyChangedSignal("Value"):Connect(function()
     tabs.strength.updatePace()
 end)
 
-tabs.strength.FastRepToggle = tabs.strength:AddSwitch("Fast Rep", function(state)
+tabs.strength.FastRepToggle = tabs.strength:AddSwitch("💪 Fast Rep", function(state)
     tabs.strength.running = state
     if state then
         if not tabs.strength.gainedBaselineSet then
