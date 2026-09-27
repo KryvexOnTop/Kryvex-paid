@@ -2465,7 +2465,7 @@ tabFarming:AddButton("⚡ Anti Lag", function()
     end)
 end)
 
-tabFarming:AddSwitch("🥚 Auto Eat Egg", function(Value)
+tabFarming:AddSwitch("🥚 Auto Eat Egg 30dk", function(Value)
     _G.AutoEatEgg = Value
 
     if not Value then
@@ -2478,10 +2478,10 @@ tabFarming:AddSwitch("🥚 Auto Eat Egg", function(Value)
             local Backpack = Player:FindFirstChild("Backpack")
             local Character = Player.Character
 
-            if Backpack then
+            if Backpack and Character then
                 local Egg = nil
 
-                -- Backpack'te Egg ara
+                -- Backpack'te Egg bul
                 for _, item in ipairs(Backpack:GetChildren()) do
                     if item:IsA("Tool") and string.find(string.lower(item.Name), "egg") then
                         Egg = item
@@ -2489,7 +2489,7 @@ tabFarming:AddSwitch("🥚 Auto Eat Egg", function(Value)
                     end
                 end
 
-                if Egg and Character then
+                if Egg then
                     local Humanoid = Character:FindFirstChildOfClass("Humanoid")
 
                     if Humanoid then
@@ -2499,6 +2499,25 @@ tabFarming:AddSwitch("🥚 Auto Eat Egg", function(Value)
 
                         -- Egg'i kullan
                         Egg:Activate()
+                        task.wait(0.5)
+
+                        -- Evet / Yes butonunu otomatik bul
+                        local PlayerGui = Player:FindFirstChild("PlayerGui")
+
+                        if PlayerGui then
+                            for _, obj in ipairs(PlayerGui:GetDescendants()) do
+                                if obj:IsA("TextButton") then
+                                    local text = string.lower(obj.Text or "")
+
+                                    if text == "evet" or text == "yes" then
+                                        pcall(function()
+                                            obj:Activate()
+                                        end)
+                                        break
+                                    end
+                                end
+                            end
+                        end
                     end
                 end
             end
@@ -2508,6 +2527,7 @@ tabFarming:AddSwitch("🥚 Auto Eat Egg", function(Value)
         end
     end)
 end)
+
 
 
 local pets = window:AddTab("Pets")
