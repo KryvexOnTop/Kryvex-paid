@@ -2925,7 +2925,7 @@ createFarm(FrostFolder, "🦵 Auto Squat", CFrame.new(-2720.66, 27.85, -590.72),
 
 local Misc = window:AddTab("Misc")
 
-Tabs.Main:AddLabel("User Settings:")
+Tabs.Misc:AddLabel("User Settings:")
 
 local Settings = {
 	Size = {Value = 2, Enabled = false},
@@ -2933,14 +2933,14 @@ local Settings = {
 	FOV = {Value = 70, Enabled = false}
 }
 
-Tabs.Main:AddTextBox("Size:", function(text)
+Tabs.Misc:AddTextBox("Size:", function(text)
 	text = string.gsub(text, "%s+", "")
 	if tonumber(text) and tonumber(text) > 0 then
 		Settings.Size.Value = tonumber(text)
 	end
 end, {clear = false})
 
-Tabs.Main:AddSwitch("Set Size", function(bool)
+Tabs.Misc:AddSwitch("Set Size", function(bool)
 	Settings.Size.Enabled = bool
 end)
 
@@ -2953,14 +2953,14 @@ task.spawn(function()
 	end
 end)
 
-Tabs.Main:AddTextBox("Speed:", function(text)
+Tabs.Misc:AddTextBox("Speed:", function(text)
 	text = string.gsub(text, "%s+", "")
 	if tonumber(text) and tonumber(text) > 0 then
 		Settings.Speed.Value = tonumber(text)
 	end
 end, {clear = false})
 
-Tabs.Main:AddSwitch("Set Speed", function(bool)
+Tabs.Misc:AddSwitch("Set Speed", function(bool)
 	Settings.Speed.Enabled = bool
 end)
 
@@ -2974,14 +2974,14 @@ task.spawn(function()
 end)
 
 if PlayerData.Camera then
-	Tabs.Main:AddTextBox("FOV:", function(text)
+	Tabs.Misc:AddTextBox("FOV:", function(text)
 		text = string.gsub(text, "%s+", "")
 		if tonumber(text) and tonumber(text) >= 1 and tonumber(text) <= 120 then
 			Settings.FOV.Value = tonumber(text)
 		end
 	end, {clear = false})
 
-	Tabs.Main:AddSwitch("Set FOV", function(bool)
+	Tabs.Misc:AddSwitch("Set FOV", function(bool)
 		Settings.FOV.Enabled = bool
 		PlayerData.Camera.FieldOfView = bool and Settings.FOV.Value or 70
 	end)
