@@ -3101,12 +3101,12 @@ local Players = game:GetService("Players")
 local VirtualInputManager = game:GetService("VirtualInputManager")
 local RunService = game:GetService("RunService")
 local Stats = game:GetService("Stats")
+local UserInputService = game:GetService("UserInputService")
 
 local Player = Players.LocalPlayer
 
 local AntiAfkEnabled = false
 local AntiAfkThread = nil
-local AntiAfkUpdateThread = nil
 local AntiAfkStartTime = 0
 
 --// UI
@@ -3121,6 +3121,7 @@ Frame.Position = UDim2.new(0.5, -95, 0, 20)
 Frame.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
 Frame.BorderSizePixel = 0
 Frame.Visible = false
+Frame.Active = true
 Frame.Parent = AntiAfkGui
 
 local Corner = Instance.new("UICorner")
@@ -3132,6 +3133,7 @@ Stroke.Color = Color3.fromRGB(255, 35, 35)
 Stroke.Thickness = 2
 Stroke.Parent = Frame
 
+--// TITLE
 local Title = Instance.new("TextLabel")
 Title.Size = UDim2.new(1, 0, 0, 28)
 Title.BackgroundTransparency = 1
@@ -3141,6 +3143,7 @@ Title.TextSize = 17
 Title.Font = Enum.Font.GothamBold
 Title.Parent = Frame
 
+--// TIME
 local TimeLabel = Instance.new("TextLabel")
 TimeLabel.Position = UDim2.new(0, 0, 0, 29)
 TimeLabel.Size = UDim2.new(1, 0, 0, 30)
@@ -3151,6 +3154,7 @@ TimeLabel.TextSize = 21
 TimeLabel.Font = Enum.Font.GothamBold
 TimeLabel.Parent = Frame
 
+--// FPS
 local FPSLabel = Instance.new("TextLabel")
 FPSLabel.Position = UDim2.new(0, 5, 0, 61)
 FPSLabel.Size = UDim2.new(0.5, -5, 0, 25)
@@ -3161,6 +3165,7 @@ FPSLabel.TextSize = 14
 FPSLabel.Font = Enum.Font.GothamSemibold
 FPSLabel.Parent = Frame
 
+--// MS
 local MSLabel = Instance.new("TextLabel")
 MSLabel.Position = UDim2.new(0.5, 0, 0, 61)
 MSLabel.Size = UDim2.new(0.5, -5, 0, 25)
@@ -3171,6 +3176,7 @@ MSLabel.TextSize = 14
 MSLabel.Font = Enum.Font.GothamSemibold
 MSLabel.Parent = Frame
 
+--// STATUS
 local Status = Instance.new("TextLabel")
 Status.Position = UDim2.new(0, 0, 0, 87)
 Status.Size = UDim2.new(1, 0, 0, 22)
@@ -3182,7 +3188,52 @@ Status.Font = Enum.Font.Gotham
 Status.Parent = Frame
 
 
+--// =========================
+--// DRAG / SÜRÜKLEME
+--// =========================
+
+local Dragging = false
+local DragStart
+local StartPos
+
+Frame.InputBegan:Connect(function(Input)
+    if Input.UserInputType == Enum.UserInputType.MouseButton1
+        or Input.UserInputType == Enum.UserInputType.Touch then
+
+        Dragging = true
+        DragStart = Input.Position
+        StartPos = Frame.Position
+
+        Input.Changed:Connect(function()
+            if Input.UserInputState == Enum.UserInputState.End then
+                Dragging = false
+            end
+        end)
+    end
+end)
+
+UserInputService.InputChanged:Connect(function(Input)
+    if Dragging and (
+        Input.UserInputType == Enum.UserInputType.MouseMovement
+        or Input.UserInputType == Enum.UserInputType.Touch
+    ) then
+
+        local Delta = Input.Position - DragStart
+
+        Frame.Position = UDim2.new(
+            StartPos.X.Scale,
+            StartPos.X.Offset + Delta.X,
+            StartPos.Y.Scale,
+            StartPos.Y.Offset + Delta.Y
+        )
+    end
+end)
+
+
+--// =========================
 --// FPS
+--// =========================
+
 local FPS = 0
 local FrameCount = 0
 local LastFPSTime = os.clock()
@@ -3190,12 +3241,12 @@ local LastFPSTime = os.clock()
 RunService.RenderStepped:Connect(function()
     FrameCount = FrameCount + 1
 
-    local now = os.clock()
+    local Now = os.clock()
 
-    if now - LastFPSTime >= 1 then
+    if Now - LastFPSTime >= 1 then
         FPS = FrameCount
         FrameCount = 0
-        LastFPSTime = now
+        LastFPSTime = Now
 
         if AntiAfkEnabled then
             FPSLabel.Text = "FPS: " .. FPS
@@ -3204,89 +3255,84 @@ RunService.RenderStepped:Connect(function()
 end)
 
 
---// MS
+--// =========================
+--// PING / MS
+--// =========================
+
 local function GetPing()
-    local ping = 0
+    local Ping = 0
 
     pcall(function()
-        local network = Stats:FindFirstChild("Network")
+        local Network = Stats:FindFirstChild("Network")
 
-        if network then
-            local serverStats = network:FindFirstChild("ServerStatsItem")
+        if Network then
+            local ServerStats = Network:FindFirstChild("ServerStatsItem")
 
-            if serverStats then
-                local dataPing = serverStats:FindFirstChild("Data Ping")
+            if ServerStats then
+                local DataPing = ServerStats:FindFirstChild("Data Ping")
 
-                if dataPing then
-                    ping = math.floor(dataPing:GetValue())
+                if DataPing then
+                    Ping = math.floor(DataPing:GetValue())
                 end
             end
         end
     end)
 
-    return ping
+    return Ping
 end
 
 
---// Süre
-AntiAfkUpdateThread = task.spawn(function()
+--// =========================
+--// SÜRE
+--// =========================
 
+task.spawn(function()
     while true do
         task.wait(1)
 
         if AntiAfkEnabled then
 
-            local elapsed = math.floor(os.clock() - AntiAfkStartTime)
+            local Elapsed = math.floor(os.clock() - AntiAfkStartTime)
 
-            local days = math.floor(elapsed / 86400)
-            local hours = math.floor((elapsed % 86400) / 3600)
-            local minutes = math.floor((elapsed % 3600) / 60)
-            local seconds = elapsed % 60
+            local Days = math.floor(Elapsed / 86400)
+            local Hours = math.floor((Elapsed % 86400) / 3600)
+            local Minutes = math.floor((Elapsed % 3600) / 60)
+            local Seconds = Elapsed % 60
 
-            -- Gün varsa:
-            -- DD:HH:MM:SS
-            if days > 0 then
-
+            if Days > 0 then
                 TimeLabel.Text = string.format(
                     "%02d:%02d:%02d:%02d",
-                    days,
-                    hours,
-                    minutes,
-                    seconds
+                    Days,
+                    Hours,
+                    Minutes,
+                    Seconds
                 )
-
             else
-
-                -- Normal:
-                -- HH:MM:SS
                 TimeLabel.Text = string.format(
                     "%02d:%02d:%02d",
-                    hours,
-                    minutes,
-                    seconds
+                    Hours,
+                    Minutes,
+                    Seconds
                 )
-
             end
 
             MSLabel.Text = "MS: " .. GetPing()
-
         end
     end
-
 end)
 
 
+--// =========================
 --// ANTI AFK SWITCH
---// ÖNEMLİ: AddSwatch değil AddSwitch
+--// =========================
+
 Misc:AddSwitch("⏰ Anti Afk", function(Value)
 
     AntiAfkEnabled = Value
-
     Frame.Visible = Value
 
     if Value then
 
-        -- Sayaç sıfırdan başlar
         AntiAfkStartTime = os.clock()
 
         TimeLabel.Text = "00:00:00"
@@ -3294,18 +3340,16 @@ Misc:AddSwitch("⏰ Anti Afk", function(Value)
         MSLabel.Text = "MS: " .. GetPing()
         Status.Text = "● ACTIVE"
 
-        -- Eski thread varsa kapat
         if AntiAfkThread then
             task.cancel(AntiAfkThread)
             AntiAfkThread = nil
         end
 
-        -- Anti AFK
         AntiAfkThread = task.spawn(function()
 
             while AntiAfkEnabled do
 
-                -- 10 dakika
+                -- 10 dakika bekle
                 task.wait(600)
 
                 if AntiAfkEnabled then
@@ -3321,7 +3365,6 @@ Misc:AddSwitch("⏰ Anti Afk", function(Value)
                             local X = Viewport.X / 2
                             local Y = Viewport.Y / 2
 
-                            -- Ekranın ortasına tıkla
                             VirtualInputManager:SendMouseButtonEvent(
                                 X,
                                 Y,
@@ -3364,8 +3407,6 @@ Misc:AddSwitch("⏰ Anti Afk", function(Value)
     end
 
 end)
-
-
 
 AutoFarm:AddLabel(" 🌦️ Change Time ")
 
