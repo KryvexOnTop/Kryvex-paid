@@ -2528,39 +2528,23 @@ tabFarming:AddSwitch("🥚 Auto Eat Egg 30dk", function(Value)
     end)
 end)
 
-tabFarming:AddSwitch("📏 Size 2", function(Value)
-    _G.AutoSize2 = Value
+tabFarming:AddSwitch("📏 Auto Size 2", function(bool)
+    _G.AutoSize2 = bool
 
-    if not Value then
-        return
-    end
+    if bool then
+        task.spawn(function()
+            while _G.AutoSize2 do
+                pcall(function()
+                    game:GetService("ReplicatedStorage")
+                        .rEvents.changeSpeedSizeRemote
+                        :InvokeServer("changeSize", 2)
+                end)
 
-    task.spawn(function()
-        while _G.AutoSize2 do
-            local Player = game:GetService("Players").LocalPlayer
-            local Character = Player.Character
-
-            if Character then
-                local Humanoid = Character:FindFirstChildOfClass("Humanoid")
-
-                if Humanoid then
-                    local Height = Humanoid:FindFirstChild("BodyHeightScale")
-                    local Width = Humanoid:FindFirstChild("BodyWidthScale")
-                    local Depth = Humanoid:FindFirstChild("BodyDepthScale")
-                    local Head = Humanoid:FindFirstChild("HeadScale")
-
-                    if Height then Height.Value = 2 end
-                    if Width then Width.Value = 2 end
-                    if Depth then Depth.Value = 2 end
-                    if Head then Head.Value = 2 end
-                end
+                task.wait(0.1)
             end
-
-            task.wait(0.5)
-        end
-    end)
-end)
-
+        end)
+    end
+end, "Size 2")
 
 
 local pets = window:AddTab("Pets")
