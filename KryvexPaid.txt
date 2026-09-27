@@ -2434,6 +2434,37 @@ tabFarming:AddSwitch("🔒 Lock Position", function(Value)
     end
 end)
 
+tabFarming:AddButton("⚡ Anti Lag", function()
+    local Workspace = game:GetService("Workspace")
+    local Lighting = game:GetService("Lighting")
+
+    -- Görsel efektleri kapat
+    for _, obj in ipairs(Workspace:GetDescendants()) do
+        if obj:IsA("ParticleEmitter")
+        or obj:IsA("Trail")
+        or obj:IsA("Beam")
+        or obj:IsA("Smoke")
+        or obj:IsA("Fire")
+        or obj:IsA("Sparkles") then
+            obj.Enabled = false
+        elseif obj:IsA("PostEffect") then
+            obj.Enabled = false
+        end
+    end
+
+    -- Lighting efektlerini kapat
+    for _, obj in ipairs(Lighting:GetDescendants()) do
+        if obj:IsA("PostEffect") then
+            obj.Enabled = false
+        end
+    end
+
+    -- Grafik kalitesini düşür
+    pcall(function()
+        settings().Rendering.QualityLevel = Enum.QualityLevel.Level01
+    end)
+end)
+
 
 
 local pets = window:AddTab("Pets")
