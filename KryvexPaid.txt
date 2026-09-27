@@ -3714,6 +3714,92 @@ Misc:AddButton("👻 Hide Effects", function()
     end
 end)
 
+Misc:AddButton("👤 Hide Players", function()
+    local Players = game:GetService("Players")
+    local LocalPlayer = Players.LocalPlayer
+
+    for _, Player in ipairs(Players:GetPlayers()) do
+        if Player ~= LocalPlayer and Player.Character then
+            for _, obj in ipairs(Player.Character:GetDescendants()) do
+                if obj:IsA("BasePart")
+                or obj:IsA("Decal")
+                or obj:IsA("Texture") then
+                    obj.LocalTransparencyModifier = 1
+                end
+            end
+        end
+    end
+end)
+
+
+Misc:AddButton("🚀 Full Optimization", function()
+    local Workspace = game:GetService("Workspace")
+    local Lighting = game:GetService("Lighting")
+    local Players = game:GetService("Players")
+    local LocalPlayer = Players.LocalPlayer
+
+    -- Grafik kalitesini düşür
+    pcall(function()
+        settings().Rendering.QualityLevel = Enum.QualityLevel.Level01
+    end)
+
+    -- Lighting efektlerini kapat
+    for _, obj in ipairs(Lighting:GetDescendants()) do
+        if obj:IsA("PostEffect")
+        or obj:IsA("Atmosphere")
+        or obj:IsA("Clouds") then
+            pcall(function()
+                obj.Enabled = false
+            end)
+        end
+    end
+
+    -- Gereksiz görsel efektleri kapat
+    for _, obj in ipairs(Workspace:GetDescendants()) do
+        if obj:IsA("ParticleEmitter")
+        or obj:IsA("Trail")
+        or obj:IsA("Beam")
+        or obj:IsA("Smoke")
+        or obj:IsA("Fire")
+        or obj:IsA("Sparkles") then
+            pcall(function()
+                obj.Enabled = false
+            end)
+
+        elseif obj:IsA("BasePart") then
+            pcall(function()
+                obj.Material = Enum.Material.SmoothPlastic
+                obj.CastShadow = false
+            end)
+        end
+    end
+
+    -- Diğer oyuncuları gizle
+    for _, Player in ipairs(Players:GetPlayers()) do
+        if Player ~= LocalPlayer and Player.Character then
+            for _, obj in ipairs(Player.Character:GetDescendants()) do
+                if obj:IsA("BasePart")
+                or obj:IsA("Decal")
+                or obj:IsA("Texture") then
+                    pcall(function()
+                        obj.LocalTransparencyModifier = 1
+                    end)
+                end
+            end
+        end
+    end
+
+    -- Terrain efektlerini azalt
+    pcall(function()
+        local Terrain = Workspace:FindFirstChildOfClass("Terrain")
+        if Terrain then
+            Terrain.Decoration = false
+        end
+    end)
+
+    print("Full Optimization aktif!")
+end)
+
 
 AutoFarm:AddLabel(" 🌦️ Change Time ")
 
