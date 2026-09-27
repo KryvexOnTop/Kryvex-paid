@@ -2402,31 +2402,6 @@ task.spawn(function()
     end
 end)
 
-tabFarming:AddSwitch("🔒 Lock Position", function(Value)
-    _G.LockPosition = Value
-
-    local Player = game:GetService("Players").LocalPlayer
-
-    if not Value then
-        return
-    end
-
-    task.spawn(function()
-        local Character = Player.Character or Player.CharacterAdded:Wait()
-        local Root = Character:WaitForChild("HumanoidRootPart")
-        local LockedCFrame = Root.CFrame
-
-        while _G.LockPosition do
-            if Root and Root.Parent then
-                Root.CFrame = LockedCFrame
-                Root.AssemblyLinearVelocity = Vector3.zero
-                Root.AssemblyAngularVelocity = Vector3.zero
-            end
-
-            task.wait(0.05)
-        end
-    end)
-end)
 
 local pets = window:AddTab("Pets")
 pets:AddLabel("💰 Auto Buy")
