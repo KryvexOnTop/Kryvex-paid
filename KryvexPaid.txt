@@ -1736,7 +1736,7 @@ Rock:AddSwitch("👊 Start Rock V2 Farm", function(Value)
     end
 end)
 
-local tabFarming = window:AddTab("Fast Farm")
+local tabFarming = window:AddTab("Fast Rebirth")
 
 tabFarming:AddLabel("👀 Fast Rebirth").TextSize = 21
 
@@ -2136,7 +2136,8 @@ task.spawn(function()
 end)
 
 
-tabFarming:AddLabel("————————————————")
+
+local tabFarming = window:AddTab("Fast Strength")
 tabFarming:AddLabel("💪 Fast Strength").TextSize = 21
 
 tabs.strength.leaderstats = lp.player:WaitForChild("leaderstats")
