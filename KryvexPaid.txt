@@ -3450,29 +3450,6 @@ Misc:AddSwitch("⏰ Anti Afk", function(Value)
 end)
 
 
-AutoFarm:AddLabel(" 🌦️ Change Time ")
-
-local timeDropdown = Misc:AddDropdown("Change Time", function(selection)
-    local lighting = game:GetService("Lighting")
-    
-    if selection == "Night" then
-        lighting.ClockTime = 0
-    elseif selection == "Day" then
-        lighting.ClockTime = 12
-    elseif selection == "Midnight" then
-        lighting.ClockTime = 6
-    end
-    
-    game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "Changed Time",
-        Text = "the time has been changed: " .. selection,
-        Duration = 0
-    })
-end)
-
-timeDropdown:Add("Night")
-timeDropdown:Add("Day")
-timeDropdown:Add("Midnight")
 
 local FPSBoostEnabled = false
 
@@ -3534,6 +3511,32 @@ Misc:AddButton("⚡ FPS Boost", function()
         print("⚡ FPS Boost: OFF")
     end
 end)
+
+
+AutoFarm:AddLabel(" 🌦️ Change Time ")
+
+local timeDropdown = Misc:AddDropdown("Change Time", function(selection)
+    local lighting = game:GetService("Lighting")
+    
+    if selection == "Night" then
+        lighting.ClockTime = 0
+    elseif selection == "Day" then
+        lighting.ClockTime = 12
+    elseif selection == "Midnight" then
+        lighting.ClockTime = 6
+    end
+    
+    game:GetService("StarterGui"):SetCore("SendNotification", {
+        Title = "Changed Time",
+        Text = "the time has been changed: " .. selection,
+        Duration = 0
+    })
+end)
+
+timeDropdown:Add("Night")
+timeDropdown:Add("Day")
+timeDropdown:Add("Midnight")
+
 
 
 Misc:AddButton("💎 Gamepass AutoLift", function()
